@@ -1,7 +1,3 @@
-package com.thenewmotion.time
-
-import java.sql.Timestamp
-
 /**
  * Copyright 2009 Jorge Ortiz
  * Copyright 2009 Barry Kaplan
@@ -19,35 +15,40 @@ import java.sql.Timestamp
  * limitations under the License. 
  *
  **/
+package com.thenewmotion.time
+
+@deprecated("Use com.thenewmotion.time._ instead", "3.0")
 object Imports extends Imports
 object TypeImports extends TypeImports
 object StaticForwarderImports extends StaticForwarderImports
 
-trait Imports extends TypeImports with StaticForwarderImports with Implicits
+trait Imports extends TypeImports with StaticForwarderImports with implicits.All
 
 trait TypeImports {
-  type Chronology     = org.joda.time.Chronology
-  type DateTime       = org.joda.time.DateTime
-  type DateTimeFormat = org.joda.time.format.DateTimeFormat
-  type DateTimeZone   = org.joda.time.DateTimeZone
-  type Duration       = org.joda.time.Duration
-  type Interval       = org.joda.time.Interval
-  type LocalDate      = org.joda.time.LocalDate
-  type LocalDateTime  = org.joda.time.LocalDateTime
-  type LocalTime      = org.joda.time.LocalTime
-  type Period         = org.joda.time.Period
-  type Partial        = org.joda.time.Partial
+  type Chronology        = org.joda.time.Chronology
+  type DateTime          = org.joda.time.DateTime
+  type DateTimeFormat    = org.joda.time.format.DateTimeFormat
+  type DateTimeFormatter = org.joda.time.format.DateTimeFormatter
+  type DateTimeZone      = org.joda.time.DateTimeZone
+  type Duration          = org.joda.time.Duration
+  type Interval          = org.joda.time.Interval
+  type LocalDate         = org.joda.time.LocalDate
+  type LocalDateTime     = org.joda.time.LocalDateTime
+  type LocalTime         = org.joda.time.LocalTime
+  type Period            = org.joda.time.Period
+  type Partial           = org.joda.time.Partial
 }
 
 trait StaticForwarderImports {
-  val DateTime       = com.thenewmotion.time.StaticDateTime
-  val DateTimeFormat = com.thenewmotion.time.StaticDateTimeFormat
-  val DateTimeZone   = com.thenewmotion.time.StaticDateTimeZone
-  val Duration       = com.thenewmotion.time.StaticDuration
-  val Interval       = com.thenewmotion.time.StaticInterval
-  val LocalDate      = com.thenewmotion.time.StaticLocalDate
-  val LocalDateTime  = com.thenewmotion.time.StaticLocalDateTime
-  val LocalTime      = com.thenewmotion.time.StaticLocalTime
-  val Period         = com.thenewmotion.time.StaticPeriod
-  val Partial        = com.thenewmotion.time.StaticPartial
+  val DateTime          = factory.StaticDateTime
+  val DateTimeFormat    = factory.StaticDateTimeFormat
+  val ISODateTimeFormat = factory.StaticISODateTimeFormat
+  val DateTimeZone      = factory.StaticDateTimeZone
+  val Duration          = factory.StaticDuration
+  val Interval          = factory.StaticInterval
+  val LocalDate         = factory.StaticLocalDate
+  val LocalDateTime     = factory.StaticLocalDateTime
+  val LocalTime         = factory.StaticLocalTime
+  val Period            = factory.StaticPeriod
+  val Partial           = factory.StaticPartial
 }

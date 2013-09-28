@@ -1,8 +1,12 @@
 package com.thenewmotion.time
 
 import scalaz._
-import TypeImports._
+import com.thenewmotion.time.factory.{StaticPeriod, StaticDuration}
+import com.thenewmotion.time.extension.RichPeriod
 
+object typeinstance extends Instances
+
+@deprecated("Use com.thenewmotion.time.typeinstance._ instead", "3.0")
 object ScalazImports extends Instances
 
 trait Instances {

@@ -25,7 +25,7 @@
 	// returns Long = 1000
 	
 	2.hours + 45.minutes + 10.seconds
-	// returns com.thenewmotion.time.DurationBuilder
+	// returns com.thenewmotion.time.factory.DurationBuilder
 	// (can be used as a Duration or as a Period)
 	
 	(2.hours + 45.minutes + 10.seconds).millis
