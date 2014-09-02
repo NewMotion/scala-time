@@ -1,5 +1,6 @@
 import sbt._
 import Keys._
+import sbtrelease.ReleasePlugin._
 
 object TimeBuild extends Build {
   import Deps._
@@ -12,6 +13,8 @@ object TimeBuild extends Build {
     scalaVersion := Versions.scala,
 
     crossVersion := CrossVersion.full,
+
+    ReleaseKeys.crossBuild := true,
 
     resolvers ++= Seq(
       "Releases"  at "http://nexus.thenewmotion.com/content/repositories/releases-public",
@@ -26,10 +29,10 @@ object TimeBuild extends Build {
   )
 
   lazy val publishSettings = Seq(
-    publishTo <<= version { (v: String) =>
+    publishTo := {
       val nexus = "http://nexus.thenewmotion.com/content/repositories/"
-      if (v.trim.endsWith("SNAPSHOT")) Some("snapshots" at nexus + "snapshots")
-      else                             Some("releases"  at nexus + "releases")
+      if (isSnapshot.value) Some("snapshots" at nexus + "snapshots")
+      else                  Some("releases"  at nexus + "releases")
     },
     publishMavenStyle := true,
     pomExtra :=
@@ -41,10 +44,13 @@ object TimeBuild extends Build {
         </license>
       </licenses>,
     credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
-  )
+  ) ++ releaseSettings
 
 
-  lazy val root = Project(id= "root", base = file(".")) aggregate (time, scalazBindings)
+  lazy val timeParent = Project(id= "time-parent", base = file("."))
+    .settings(basicSettings: _*)
+    .settings(publishSettings: _*)
+    .aggregate(time, scalazBindings)
 
   lazy val time = Project(id = "time", base = file("time"))
     .settings(basicSettings: _*)
@@ -62,7 +68,7 @@ object TimeBuild extends Build {
     .settings(publishSettings: _*)
     .settings(description  := "Scalaz bindings for time")
     .settings(
-      libraryDependencies <++= (scalaVersion) { v: String =>
+      libraryDependencies <++= scalaVersion { v: String =>
         if (v.startsWith("2.10")) {
           Seq(scalaz, scalaCompiler_2_10)
         } else {
@@ -74,12 +80,12 @@ object TimeBuild extends Build {
 
 object Deps {
   object Versions {
-    val scala = "2.11.1"
-    val crossScala = Seq("2.11.1", "2.10.4")
+    val scala = "2.11.2"
+    val crossScala = Seq("2.10.4", "2.11.2")
   }
   val scalaz        = "org.scalaz"      %% "scalaz-core"    % "7.0.6"
   val jodaTime      = "joda-time"       %  "joda-time"      % "2.4"
-  val jodaConvert   = "org.joda"        %  "joda-convert"   % "1.6"
+  val jodaConvert   = "org.joda"        %  "joda-convert"   % "1.7"
   val scalaCompiler_2_10 = "org.scala-lang"  %  "scala-compiler" % "2.10.4"
-  val scalaCompiler_2_11 = "org.scala-lang"  %  "scala-compiler" % "2.11.1"
+  val scalaCompiler_2_11 = "org.scala-lang"  %  "scala-compiler" % "2.11.2"
 }
