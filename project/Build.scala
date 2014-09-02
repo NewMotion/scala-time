@@ -31,8 +31,8 @@ object TimeBuild extends Build {
   lazy val publishSettings = Seq(
     publishTo := {
       val nexus = "http://nexus.thenewmotion.com/content/repositories/"
-      if (isSnapshot.value) Some("snapshots" at nexus + "snapshots")
-      else                  Some("releases"  at nexus + "releases")
+      if (isSnapshot.value) Some("snapshots" at nexus + "snapshots-public")
+      else                  Some("releases"  at nexus + "releases-public")
     },
     publishMavenStyle := true,
     pomExtra :=
@@ -62,7 +62,7 @@ object TimeBuild extends Build {
       )
     )
 
-  lazy val scalazBindings = Project(id = "scalaz-bindings", base = file("time-scalaz-bindings"))
+  lazy val scalazBindings = Project(id = "time-scalaz-bindings", base = file("time-scalaz-bindings"))
     .dependsOn(time)
     .settings(basicSettings: _*)
     .settings(publishSettings: _*)
