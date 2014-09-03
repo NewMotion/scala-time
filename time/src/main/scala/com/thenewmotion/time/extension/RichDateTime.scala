@@ -18,7 +18,7 @@ package com.thenewmotion.time.extension
  **/
 import java.sql.Timestamp
 import org.joda.time._
-import com.thenewmotion.time.factory.DurationBuilder
+import com.thenewmotion.time.factory.{StaticISODateTimeFormat, DurationBuilder}
 
 class RichDateTime(val self: DateTime) extends AnyVal {
   def -(duration: Long): DateTime = self.minus(duration)
