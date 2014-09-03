@@ -12,8 +12,6 @@ object TimeBuild extends Build {
 
     scalaVersion := Versions.scala,
 
-    crossVersion := CrossVersion.full,
-
     ReleaseKeys.crossBuild := true,
 
     resolvers ++= Seq(
