@@ -45,4 +45,7 @@ object StaticDateTime {
   def lastYear   = now - 1.year
 
   def parse(s: String, fmt: DateTimeFormatter) = DateTime.parse(s, fmt)
+
+  @deprecated("2.4", "use `new DateTime(..)`")
+  def fromJsonString(x: String): DateTime = new DateTime(x)
 }
