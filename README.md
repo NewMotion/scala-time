@@ -1,5 +1,42 @@
 # A Scala wrapper for Joda Time [![Build Status](https://secure.travis-ci.org/thenewmotion/scala-time.png)](http://travis-ci.org/thenewmotion/scala-time)
 
+## Motivation:
+
+The Java Date and Calendar libraries are largely inadequate. They are mutable,
+not thread-safe, and very inconvenient to use.
+
+The Joda Time library is a great replacement for Java's Date and Calendar
+classes. They're immutable by default, have a much richer and nicer API, and
+can easily be converted to Java's Date and Calendar classes when necessary.
+
+This project provides a thin layer of convenience around the Joda Time
+libraries, making them more idiomatic to use within Scala.
+
+## Setup
+
+### Sbt
+
+``` scala
+resolvers += "The New Motion Public Repo" at "http://nexus.thenewmotion.com/content/groups/public/"
+libraryDependencies += "com.thenewmotion" %% "time" % "2.8"
+```
+
+### Maven
+
+```xml
+<repository>
+  <id>thenewmotion</id>
+  <name>The New Motion Repository</name>
+  <url>http://nexus.thenewmotion.com/content/repositories/releases-public</url>
+</repository>
+...
+<dependency>
+  <groupId>com.thenewmotion</groupId>
+  <artifactId>time_2.10</artifactId>
+  <version>2.8</version>
+</dependency>
+```
+
 ## Usage:
 
 ```scala
@@ -44,34 +81,3 @@ also been shortened.
 Please see Joda Time for full explanation of key concepts and API:
 http://joda-time.sourceforge.net/index.html
 
-## Setup
-
-1. Add this repository to your pom.xml:
-```xml
-    <repository>
-        <id>thenewmotion</id>
-        <name>The New Motion Repository</name>
-        <url>http://nexus.thenewmotion.com/content/repositories/releases-public</url>
-    </repository>
-```
-
-2. Add dependency to your pom.xml:
-```xml
-    <dependency>
-        <groupId>com.thenewmotion</groupId>
-        <artifactId>time_2.10</artifactId>
-        <version>2.4</version>
-    </dependency>
-```
-
-## Motivation:
-
-The Java Date and Calendar libraries are largely inadequate. They are mutable,
-not thread-safe, and very inconvenient to use.
-
-The Joda Time library is a great replacement for Java's Date and Calendar
-classes. They're immutable by default, have a much richer and nicer API, and
-can easily be converted to Java's Date and Calendar classes when necessary.
-
-This project provides a thin layer of convenience around the Joda Time
-libraries, making them more idiomatic to use within Scala.
