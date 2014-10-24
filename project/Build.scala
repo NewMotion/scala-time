@@ -6,20 +6,13 @@ object TimeBuild extends Build {
 
   import Deps._
 
-  lazy val nexus = "http://nexus.thenewmotion.com/content/repositories/"
-
-  lazy val nexusReleases = nexus + "releases-public"
-
-  lazy val nexusSnapshots = nexus + "snapshots-public"
-
   lazy val basicSettings = Seq(
     organization := "com.thenewmotion",
     crossScalaVersions := Seq(scala_2_10, scala_2_11),
     scalaVersion := scala_2_11,
     ReleaseKeys.crossBuild := true,
     resolvers ++= Seq(
-      "Releases" at nexusReleases,
-      "Snapshots" at nexusSnapshots
+      "TNM General" at "http://nexus.thenewmotion.com/content/groups/general/"
     ),
     scalacOptions := Seq(
       "-encoding", "UTF-8",
@@ -29,7 +22,11 @@ object TimeBuild extends Build {
   )
 
   lazy val publishSettings = Seq(
-    publishTo := Some("snapshots" at (if (isSnapshot.value) nexusSnapshots else nexusReleases)),
+    publishTo := {
+      val nexus = "http://nexus.thenewmotion.com/content/repositories/"
+      if (isSnapshot.value) Some("snapshots" at nexus + "snapshots-public")
+      else Some("releases"  at nexus + "releases-public")
+    },
     publishMavenStyle := true,
     licenses +=("Apache License, Version 2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
     credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
