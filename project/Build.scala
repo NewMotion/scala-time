@@ -11,9 +11,6 @@ object TimeBuild extends Build {
     crossScalaVersions := Seq(scala_2_10, scala_2_11),
     scalaVersion := scala_2_11,
     ReleaseKeys.crossBuild := true,
-    resolvers ++= Seq(
-      "TNM General" at "http://nexus.thenewmotion.com/content/groups/general/"
-    ),
     scalacOptions := Seq(
       "-encoding", "UTF-8",
       "-unchecked",
