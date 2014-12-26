@@ -1,28 +1,28 @@
-import sbt._
-import Keys._
+import sbt._, Keys._
 import sbtrelease.ReleasePlugin._
 
 object TimeBuild extends Build {
 
   import Deps._
 
-  lazy val basicSettings = Seq(
+  val basicSettings = Seq(
     organization := "com.thenewmotion",
-    crossScalaVersions := Seq(scala_2_10, scala_2_11),
-    scalaVersion := scala_2_11,
+    crossScalaVersions := Seq(Scala.current, Scala.prev),
+    scalaVersion := Scala.current,
     ReleaseKeys.crossBuild := true,
     scalacOptions := Seq(
       "-encoding", "UTF-8",
       "-unchecked",
-      "-deprecation"
+      "-deprecation",
+      "-feature",
+      "-Xlog-reflective-calls"
     )
   )
 
-  lazy val publishSettings = Seq(
+  val publishSettings = Seq(
     publishTo := {
-      val nexus = "http://nexus.thenewmotion.com/content/repositories/"
-      if (isSnapshot.value) Some("snapshots" at nexus + "snapshots-public")
-      else Some("releases"  at nexus + "releases-public")
+      def nexus(tpe: String) = s"http://nexus.thenewmotion.com/content/repositories/releases-$tpe"
+      Some("publish" at (nexus(if (isSnapshot.value) "snapshots" else "releases")))
     },
     publishMavenStyle := true,
     licenses +=("Apache License, Version 2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
@@ -33,11 +33,7 @@ object TimeBuild extends Build {
     .settings(basicSettings: _*)
     .settings(publishSettings: _*)
 
-  lazy val timeParent = proj("time-parent", ".")
-    .settings(publishArtifact := false)
-    .aggregate(time, scalazBindings)
-
-  lazy val time = proj("time", "time")
+  val time = proj("time", "time")
     .settings(description := "Scala wrapper around Joda-time")
     .settings(
       libraryDependencies ++= Seq(
@@ -46,26 +42,26 @@ object TimeBuild extends Build {
       )
     )
 
-  lazy val scalazBindings = proj("time-scalaz-bindings", "time-scalaz-bindings")
+  val scalazBindings = proj("time-scalaz-bindings", "time-scalaz-bindings")
     .dependsOn(time)
     .settings(description := "Scalaz bindings for time")
     .settings(
-      libraryDependencies <++= scalaVersion { v: String =>
-        Seq(
-          scalaz,
-          if (v == scala_2_10) scalaCompiler_2_10 else scalaCompiler_2_11
-        )
-      }
+      libraryDependencies +=
+        scalaz
     )
+
+  val timeParent = proj("time-parent", ".")
+    .settings(publishArtifact := false)
+    .aggregate(time, scalazBindings)
+
 }
 
 object Deps {
-  val scala_2_11 = "2.11.2"
-  val scala_2_10 = "2.10.4"
-
-  val scalaz = "org.scalaz" %% "scalaz-core" % "7.0.6"
-  val jodaTime = "joda-time" % "joda-time" % "2.4"
+  object Scala {
+    val current = "2.11.4"
+    val prev = "2.10.4"
+  }
+  val jodaTime = "joda-time" % "joda-time" % "2.6"
   val jodaConvert = "org.joda" % "joda-convert" % "1.7"
-  val scalaCompiler_2_10 = "org.scala-lang" % "scala-compiler" % scala_2_10
-  val scalaCompiler_2_11 = "org.scala-lang" % "scala-compiler" % scala_2_11
+  val scalaz = "org.scalaz" %% "scalaz-core" % "7.0.6"
 }
